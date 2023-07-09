@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
   message: string;
-  response: any;
+  response: Person[];
 };
 
 export default async function handler(
@@ -10,14 +10,39 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const response = await fetch(`https://swapi.dev.api/people/1/`);
-    const data = await response.json();
-    console.log(data);
-    res.status(200).json({
-      message: "Get Success",
-      response: data,
-    });
+    switch (req.method) {
+      case "GET":
+        let currPage = 1;
+        let nextPageResults = true;
+        let people: Person[] = [];
+        const { searchTerm } = req.query;
+        while (nextPageResults) {
+          const response = await fetch(
+            `https://swapi.dev/api/people/?search=${searchTerm}&page=${currPage}`
+          );
+          const data = await response.json();
+          data.results.forEach((person: Person) => {
+            people = [...people, person];
+          });
+          if (data.next != null) {
+            currPage++;
+          } else {
+            nextPageResults = false;
+          }
+        }
+        people.sort((a, b) => {
+          return a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1;
+        });
+        res.status(200).json({
+          message: "Get Success",
+          response: people,
+        });
+        break;
+    }
   } catch (e) {
-    console.log(e);
+    res.status(500).json({
+      message: "Get failure",
+      response: [],
+    });
   }
 }

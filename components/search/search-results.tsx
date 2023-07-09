@@ -1,14 +1,23 @@
-export default function SearchResults(people: Person[]) {
+interface ApiResponse {
+  results: {
+    message: string;
+    response: Person[];
+  };
+}
+
+export default function SearchResults(props: { data: ApiResponse }) {
+  const currentPeople = props.data.results.response;
+
   return (
     <>
-      {people.length > 0 ? (
-        people.map((person) => (
+      {currentPeople.length > 0 ? (
+        currentPeople.map((person) => (
           <div key={person.url}>
-            <div>Name: {person.name}</div>
+            <div>{person.name}</div>
           </div>
         ))
       ) : (
-        <div></div>
+        <div>No Results</div>
       )}
     </>
   );
