@@ -1,0 +1,12 @@
+.roundedBorder {
+  border: 1.5px solid rgba(228, 228, 228, 0.659);
+  border-radius: 6px;
+}
+
+.characterRow:hover {
+  background-color: aliceblue;
+}
+
+.selectedCharacter {
+  background-color: aliceblue;
+}

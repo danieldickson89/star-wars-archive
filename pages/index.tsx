@@ -5,8 +5,12 @@ import {
   Input,
   VStack,
   CircularProgress,
+  Box,
+  SimpleGrid,
+  Center,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import utilStyles from "../styles/utils.module.css";
 
 export default function Home() {
   interface ApiResponse {
@@ -25,6 +29,12 @@ export default function Home() {
     setSearchTermChanged(true);
     setSearchTerm(text);
   }
+
+  const handleKeyDown = (event: any) => {
+    if (searchTerm !== "" && event.key === "Enter") {
+      getPeople();
+    }
+  };
 
   async function getPeople() {
     setSearchTermChanged(false);
@@ -51,11 +61,31 @@ export default function Home() {
         <CircularProgress isIndeterminate color="cyan.300"></CircularProgress>
       );
     } else if (data && data.response && data.response.length > 0) {
-      return data.response.map((person) => (
-        <div key={person.url}>
-          <div>{person.name}</div>
-        </div>
-      ));
+      return (
+        <Box
+          className={utilStyles.roundedBorder}
+          overflowY="auto"
+          maxHeight="30em"
+          width="29rem"
+          minH="2em"
+        >
+          {" "}
+          {data.response.map((person) => (
+            <Center>
+              <Box
+                className={utilStyles.characterRow}
+                textAlign="center"
+                width="100%"
+                padding=".5rem"
+                key={person.url}
+                cursor="pointer"
+              >
+                {person.name}
+              </Box>
+            </Center>
+          ))}
+        </Box>
+      );
     } else {
       return <div>No Results</div>;
     }
@@ -77,6 +107,7 @@ export default function Home() {
                 : searchTerm
             }
             onChange={(e) => updateSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
 
           <Button onClick={getPeople}>GET</Button>
