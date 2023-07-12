@@ -1,6 +1,8 @@
 .roundedBorder {
   border: 1.5px solid rgba(228, 228, 228, 0.659);
-  border-radius: 6px;
+  border-top: none;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .characterRow:hover {
