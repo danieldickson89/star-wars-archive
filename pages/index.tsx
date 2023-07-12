@@ -18,7 +18,6 @@ import utilStyles from "../styles/utils.module.css";
 
 export async function getServerSideProps() {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  console.log("API BASE URL: ", apiBaseUrl);
   return {
     props: { apiBaseUrl },
   };
