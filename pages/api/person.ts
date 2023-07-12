@@ -2,12 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
   message: string;
-  response: {
-    person: Person | null;
-    homeworld: Planet | null;
-    starships: Starship[];
-    species: Species[];
-  };
+  response: CharacterDetails | null;
 };
 
 export default async function handler(
@@ -55,12 +50,7 @@ export default async function handler(
   } catch (e) {
     res.status(500).json({
       message: "GET failed",
-      response: {
-        person: null,
-        homeworld: null,
-        starships: [],
-        species: [],
-      },
+      response: null,
     });
   }
 }
