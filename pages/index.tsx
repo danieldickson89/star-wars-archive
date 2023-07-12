@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import utilStyles from "../styles/utils.module.css";
 
 export async function getServerSideProps() {
-  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const apiBaseUrl = process.env.API_BASE_URL;
   return {
     props: { apiBaseUrl },
   };
