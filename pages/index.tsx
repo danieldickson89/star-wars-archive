@@ -16,7 +16,15 @@ import {
 import { useEffect, useState } from "react";
 import utilStyles from "../styles/utils.module.css";
 
-export default function Home() {
+export async function getServerSideProps() {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  console.log("API BASE URL: ", apiBaseUrl);
+  return {
+    props: { apiBaseUrl },
+  };
+}
+
+export default function Home(props: any) {
   const [peopleNamesAndIds, setPeopleNamesAndIds] = useState<
     PersonNameAndId[] | null
   >(null);
@@ -30,9 +38,8 @@ export default function Home() {
     useState<CharacterDetails | null>(null);
 
   async function getAllPeopleNamesAndIds() {
-    // const apiBaseUrl = process.env.API_BASE_URL;
     if (peopleNamesAndIds == null) {
-      let res = await fetch(`http://localhost:3000/api/peopleNamesAndIds`, {
+      let res = await fetch(`${props.apiBaseUrl}peopleNamesAndIds`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +103,7 @@ export default function Home() {
 
   async function getPerson(id: string) {
     setLoadingPerson(true);
-    const res = await fetch(`http://localhost:3000/api/person?id=${id}`, {
+    const res = await fetch(`${props.apiBaseUrl}person?id=${id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -173,7 +180,9 @@ export default function Home() {
                 </Box>
               ) : (
                 <Center mt=".5rem">
-                  <Text fontSize="md" color="gray.400">No Results</Text>
+                  <Text fontSize="md" color="gray.400">
+                    No Results
+                  </Text>
                 </Center>
               )}
               {loadingPerson ? (
